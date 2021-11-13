@@ -1,70 +1,39 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Guappjolotas
 
-## Available Scripts
+Construye la aplicación que te ayudará a ordenar tus guajolotas a domicilio.
 
-In the project directory, you can run:
+**¿Qué es una guajolota?**
 
-### `npm start`
+Platillo típico de la gastronomía de la Ciudad de México que consiste de un tamal dentro de un bolillo.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Requerimientos generales del sistema
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Debe hacer uso de [ReactJS](https://es.reactjs.org/) y [styled-components](https://styled-components.com/)
 
-### `npm test`
+- Añadir como complemento del diseño crear perfil e iniciar sesión.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Agrega los productos y haz funcionar el buscador para encontrar tu guajolota favorita. 
+**Utiliza ReactMemo para optimizar tu buscador**
 
-### `npm run build`
+- Establece enrutamiento dinámico
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Permite que agreguen y eliminen productos del carrito, crea el checkout, todo esto haciendo uso de una API Fake utilizando **JSON web server** donde se permita ejecutar peticiones HTTP.
+[Documentación JSON web Server](https://github.com/typicode/json-server)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Integra Stripe para poder hacer cobros mínimos desde 10 pesos.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Requerimientos
 
-### `npm run eject`
+- Planeación de actividades del desarrollo del producto software (Trello o GitHub Projects)
+- Aloja las imágenes provistas en algún proveedor de alojamiento de imáges en la nube, te recomendamos [imgur](https://imgur.com/).
+- Habilitar el checkout con **Stripe** [API de Stripe](https://stripe.com/docs/api)
+- Integrar módulo de autenticación (Iniciar sesión / Registrarse) utilizando local storage o session storage para guardar la sesión.
+- Agregar y eliminar productos del carrito.
+- Publica tu resultado con [Netlify](https://www.netlify.com/) para el frontend.
+- Publica tu API Fake haciendo uso de [Vercel](https://vercel.com/).
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Consideraciones finales
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Tener en cuenta la estructura y recomendaciones de un README.md profesional compartido en el **SPRINT 1**
