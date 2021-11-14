@@ -1,31 +1,84 @@
-import React from 'react'
-// import { Divbkg, Sh3, Categorydiv } from '../styles/HomeStyles'
+import React, { useState, useEffect } from 'react'
+import { Section, H1, Sh3, Categorydiv, Input } from '../styles/HomeStyles'
+import { Card, Row, Column, Img, Price } from '../styles/CardStyles'
 import Nav from 'react-bootstrap/Nav'
+import axios from 'axios'
+import { URL_GUAJOLOTAS , URL_BEBIDAS, URL_TAMALES } from '../helpers/URL'
 
 export const Home = () => {
 
+    let productFlag = null
+    
+    const [producto, setProducto] = useState([])
+
+    useEffect(() => {
+    //    getProducto(url) //BY DEFAULT, THIS IS THE PAGE WE SHOW WHEN FIRST LOAD
+    }, [])
+
+    const getProducto = (url) => {
+        axios.get(url)
+            .then(res => setProducto(res.data))
+    }
+
+    const handleGuajolotaTbn = () => {
+            setProducto([])
+            getProducto(URL_GUAJOLOTAS)  
+    }
+    const handleBebidaTbn = () => {
+            setProducto([])
+            getProducto(URL_BEBIDAS)  
+    }
+    const handleTamalbn = () => {
+            setProducto([])
+            getProducto(URL_TAMALES)  
+    }
+
+
+
+    console.log(producto)
+
+    //THE STUFF TO RENDER GOES BELOW
     return (
         <>
             <div>
                 <img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636836844/guappjolotas/card-logo_i9dxmk.png" height="64" alt="logo"></img>
-                <h1>Nada como una buena Guajolota para empezar el día</h1>
-                <input placeholder="Sabor de guajolota, bebidas..."></input>
+                <H1>Nada como una buena Guajolota para empezar el día</H1>
+
             </div>
+            <Section>
+                <Input placeholder="Sabor de guajolota, bebidas..."></Input>
+            </Section>
             <div>
-                <Nav className="justify-content-center">
+                <Categorydiv className="justify-content-center">
                     <Nav.Item>
-                        <Nav.Link>Guajolota</Nav.Link>
+                        <Sh3 onClick={handleGuajolotaTbn}>Guajolota</Sh3>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link>Bebidas</Nav.Link>
+                        <Sh3 onClick={handleBebidaTbn}>Bebidas</Sh3>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link>Tamales</Nav.Link>
+                        <Sh3 onClick={handleTamalbn}>Tamales</Sh3>
                     </Nav.Item>
-                </Nav>
+                </Categorydiv>
             </div>
 
-            
+            <div>
+                {
+                    producto.map(prod => (
+                        <Card key={prod.id}>
+                            <Row>
+                                <Column>
+                                    <Img src={prod.img} alt={prod.type} />
+                                </Column>
+                                <Column>
+                                    <h2>{prod.type}</h2>
+                                    <Price>${prod.price} MXN</Price>
+                                </Column>
+                            </Row>
+                        </Card>
+                    ))
+                }
+            </div>
         </>
     )
 }

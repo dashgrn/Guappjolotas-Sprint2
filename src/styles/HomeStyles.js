@@ -1,5 +1,13 @@
 import styled from 'styled-components'
 
+export const Body = styled.body`
+    font-family: 'Inter', sans-serif;
+`
+
+export const H1 = styled.h1`
+    font-family: 'Inter', sans-serif;
+`
+
 export const Divbkg = styled.div`
     background-color: #F2F2F2;
     `
@@ -7,9 +15,29 @@ export const Sh3 = styled.h3`
     color: gray;
     text-align: center;
     grid-column:1;
-    `;
+    padding: .5rem;
+    `
 
 export const Categorydiv = styled.div`
-    justify-content:center;
-    grid-row: 1
+    display: flex;
+    justify-content:space-between;
+    grid-row: 1;
+`
+
+export const Input = styled.input`
+    border-radius: 45px;
+    display: flex;
+    text-align: center;
+    height: 60px;
+    width: 312px;
+    background-color: #E7E7E7;
+    color: #9A9A9D;
+    font-size: 17px;
+    line-height: 21px;
+`
+export const Section = styled.section`
+    margin: auto;
+    text-align: center;
+    padding: 10px;
+    width: 80%;
 `

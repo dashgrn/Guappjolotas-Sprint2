@@ -5,10 +5,20 @@ import {BrowserRouter as Router,
     from 'react-router-dom';
 import { Home } from '../components/Home';
 
+import { createGlobalStyle } from "styled-components";
+const GlobalStyles = createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap');
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F2F2F2;
+  }
+`
+
 export const AppRouter = () => {
     return (
         <>
             <Router>
+                <GlobalStyles/>
                 <Routes>
                     <Route exact path="/" element={<Home/>}/>
                 </Routes>
