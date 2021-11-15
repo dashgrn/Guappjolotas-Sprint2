@@ -5,6 +5,7 @@ import {BrowserRouter as Router,
     from 'react-router-dom';
 import { Home } from '../components/Home';
 import {Product} from '../components/Product';
+import Cart from '../components/Cart'
 
 import { createGlobalStyle } from "styled-components";
 const GlobalStyles = createGlobalStyle`
@@ -23,6 +24,7 @@ export const AppRouter = () => {
                 <Routes>
                     <Route exact path="/" element={<Home/>}/>
                     <Route exact path="/product" element={<Product/>}/>
+                    <Route exact path="/cart" element={<Cart/>}/>
                 </Routes>
             </Router>
         </>
