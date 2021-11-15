@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { Section, H1, Sh3, Categorydiv, Input } from '../styles/HomeStyles'
-import { Card, Row, Column, Img, Price } from '../styles/CardStyles'
+import { Card, Row, Column, Img, Price, ProdName } from '../styles/CardStyles'
 import Nav from 'react-bootstrap/Nav'
 import axios from 'axios'
-import { URL_GUAJOLOTAS , URL_BEBIDAS, URL_TAMALES } from '../helpers/URL'
+import { URL_GUAJOLOTAS, URL_BEBIDAS, URL_TAMALES } from '../helpers/URL'
 
 export const Home = () => {
 
     let productFlag = null
-    
+
     const [producto, setProducto] = useState([])
 
     useEffect(() => {
-    //    getProducto(url) //BY DEFAULT, THIS IS THE PAGE WE SHOW WHEN FIRST LOAD
+        if (productFlag === null) {
+            getProducto(URL_GUAJOLOTAS) //BY DEFAULT, THIS IS THE PAGE WE SHOW WHEN FIRST LOAD
+        }
+
     }, [])
 
     const getProducto = (url) => {
@@ -21,16 +25,16 @@ export const Home = () => {
     }
 
     const handleGuajolotaTbn = () => {
-            setProducto([])
-            getProducto(URL_GUAJOLOTAS)  
+        setProducto([])
+        getProducto(URL_GUAJOLOTAS)
     }
     const handleBebidaTbn = () => {
-            setProducto([])
-            getProducto(URL_BEBIDAS)  
+        setProducto([])
+        getProducto(URL_BEBIDAS)
     }
     const handleTamalbn = () => {
-            setProducto([])
-            getProducto(URL_TAMALES)  
+        setProducto([])
+        getProducto(URL_TAMALES)
     }
 
 
@@ -66,15 +70,17 @@ export const Home = () => {
                 {
                     producto.map(prod => (
                         <Card key={prod.id}>
-                            <Row>
-                                <Column>
-                                    <Img src={prod.img} alt={prod.type} />
-                                </Column>
-                                <Column>
-                                    <h2>{prod.type}</h2>
-                                    <Price>${prod.price} MXN</Price>
-                                </Column>
-                            </Row>
+                            <Link to="/product" style={{ textDecoration: 'none'}}>
+                                <Row>
+                                    <Column>
+                                        <Img src={prod.img} alt={prod.type} />
+                                    </Column>
+                                    <Column>
+                                        <ProdName>{prod.type}</ProdName>
+                                        <Price>${prod.price} MXN</Price>
+                                    </Column>
+                                </Row>
+                            </Link>
                         </Card>
                     ))
                 }

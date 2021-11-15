@@ -22,3 +22,7 @@ export const Img = styled.img`
 export const Price = styled.h3`
     color: #FA4A0C;
 `
+
+export const ProdName = styled.h2`
+    color: black;
+`
