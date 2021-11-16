@@ -33,6 +33,11 @@ export const Price = styled.h3`
     color: #FA4A0C;
     font-size: 22px;
 `
+export const Price2 = styled.h3`
+    text-align: center;
+    color: #FA4A0C;
+    font-size: 12px;
+`
 
 export const FlavorGrid = styled.div`
     display: flex;
@@ -87,4 +92,5 @@ export const Row = styled.div`
 
 export const Column = styled.div`
     flex: 50%;
+    flex-direction: column;
 `

@@ -1,8 +1,26 @@
-import React from 'react'
-import { CardBtn, QtyBtn, Price, ProdName, Img, FlavorGrid, FlavorItem, AddToCartBtn, BtnAddToCartContainer, ProductMain, Row, Column } from '../styles/ProductStyles'
+import React, { useEffect, useState } from 'react'
+import { URL_BEBIDAS } from '../helpers/URL'
+import axios from 'axios'
+import { CardBtn, QtyBtn, Price, Price2, ProdName, Img, FlavorGrid, FlavorItem, AddToCartBtn, BtnAddToCartContainer, ProductMain, Row, Column } from '../styles/ProductStyles'
 
 
 export const Product = () => {
+
+    const [productFlag, setProductFlag] = useState(undefined)
+
+    const [recomendedProduct, setRecomendedProduct] = useState([])
+
+    const getRecomend = () => {
+        axios.get(URL_BEBIDAS)
+            .then(res => setRecomendedProduct(res.data))
+    }
+
+    useEffect(() => {
+        getRecomend()
+    }, [])
+
+    console.log(recomendedProduct)
+
     return (
         <div>
             <ProductMain>
@@ -37,30 +55,47 @@ export const Product = () => {
                     </FlavorGrid>
                 </section>
 
+                {/* GUAJOLOCOMBO */}
                 <section>
-                    <h2>Gualolocombo</h2>
-                    <h5>Selecciona la bebida que más te guste y disfruta de tu desayuno.</h5>
+                <h2>Gualolocombo</h2>
+                                <h5>Selecciona la bebida que más te guste y disfruta de tu desayuno.</h5>
+                    {
+                        recomendedProduct.map(prod => (
+                            <div key={prod.id}>
+                                
 
-                    <div>
-                        tes tes
-                        <Row>
-                            <img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636836844/guappjolotas/bebidas/Property_1_champurrado_a3bztk.svg" alt="bebida" />
-                            btn
-                        </Row>
-                        <Column>
-
-                        </Column>
-
-                    </div>
+                                <div>
+                                    <Row>
+                                        <img src={prod.img} alt="bebida" />
+                                        <Column>
+                                            <input type="checkbox" />
+                                        </Column>
+                                    </Row>
+                                    <Row>
+                                        <Column>
+                                            <h4>{prod.type}</h4>
+                                        </Column>
+                                        <Column>
+                                            <Price2>
+                                                + ${prod.price} MXN
+                                            </Price2>
+                                        </Column>
+                                    </Row>
+                                </div>
+                            </div>
+                        ))
+                    }
                 </section>
+
+
             </ProductMain>
 
-            <BtnAddToCartContainer>
+            {/* <BtnAddToCartContainer>
                 <AddToCartBtn>
                     Agregar 1 al carrito
                     <span> $25 MXN</span>
                 </AddToCartBtn>
-            </BtnAddToCartContainer>
+            </BtnAddToCartContainer> */}
 
         </div>
     )
