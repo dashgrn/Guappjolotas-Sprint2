@@ -38,6 +38,7 @@ export const Home = () => {
     }
 
     const cardClick = (id) => {
+        console.log(id)
         localStorage.setItem('idKeeper', id)
     }
 
@@ -103,7 +104,7 @@ export const Home = () => {
                 {
                     producto.map(prod => (
                         <Card key={prod.id}>
-                            <Link to="/product" onClick={(e) => { cardClick(e.target.id) }} style={{ textDecoration: 'none' }}>
+                            <Link to="/product" onClick={(e) => { cardClick(prod.id) }} style={{ textDecoration: 'none' }}>
                                 <Row>
                                     <Column>
                                         <Img src={prod.img} alt={prod.type} />
