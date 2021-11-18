@@ -37,12 +37,36 @@ export const Home = () => {
         getProducto(URL_TAMALES)
     }
 
+    const cardClick = (id) => {
+        localStorage.setItem('idKeeper', id)
+    }
 
+    const [guajolotaClass, setguajolotaClass] = useState('active')
+    const [bebidaClass, setbebidaClass] = useState('')
+    const [tamalesClass, settamalesClass] = useState('')
 
-    console.log(producto)
+    const classChanger = (id) => {
+        if (id === 'guajolotas') {
+            setguajolotaClass('active')
+            setbebidaClass('')
+            settamalesClass('')
+        }
+        else if (id === 'bebidas') {
+            setguajolotaClass('')
+            setbebidaClass('active')
+            settamalesClass('')
+        }
+        else if (id === 'tamales') {
+            setguajolotaClass('')
+            setbebidaClass('')
+            settamalesClass('active')
+        }
+    }
+
 
     //THE STUFF TO RENDER GOES BELOW
     return (
+
         <>
             <div>
                 <img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636836844/guappjolotas/card-logo_i9dxmk.png" height="64" alt="logo"></img>
@@ -55,13 +79,22 @@ export const Home = () => {
             <div>
                 <Categorydiv className="justify-content-center">
                     <Nav.Item>
-                        <Sh3 onClick={handleGuajolotaTbn}>Guajolota</Sh3>
+                        <Sh3 id="guajolotas" className={guajolotaClass} onClick={(e) => {
+                            handleGuajolotaTbn();
+                            classChanger(e.target.id);
+                        }}>Guajolota</Sh3>
                     </Nav.Item>
                     <Nav.Item>
-                        <Sh3 onClick={handleBebidaTbn}>Bebidas</Sh3>
+                        <Sh3 id="bebidas" className={bebidaClass} onClick={(e) => {
+                            handleBebidaTbn()
+                            classChanger(e.target.id)
+                        }}>Bebidas</Sh3>
                     </Nav.Item>
                     <Nav.Item>
-                        <Sh3 onClick={handleTamalbn}>Tamales</Sh3>
+                        <Sh3 id="tamales" className={tamalesClass} onClick={(e) => {
+                            handleTamalbn()
+                            classChanger(e.target.id)
+                        }}>Tamales</Sh3>
                     </Nav.Item>
                 </Categorydiv>
             </div>
@@ -70,7 +103,7 @@ export const Home = () => {
                 {
                     producto.map(prod => (
                         <Card key={prod.id}>
-                            <Link to="/product" style={{ textDecoration: 'none'}}>
+                            <Link to="/product" onClick={(e) => { cardClick(e.target.id) }} style={{ textDecoration: 'none' }}>
                                 <Row>
                                     <Column>
                                         <Img src={prod.img} alt={prod.type} />

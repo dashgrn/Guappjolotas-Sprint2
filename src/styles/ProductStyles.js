@@ -94,3 +94,12 @@ export const Column = styled.div`
     flex: 50%;
     flex-direction: column;
 `
+
+export const DivCart = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    color: gray;
+`

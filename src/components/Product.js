@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { URL_BEBIDAS } from '../helpers/URL'
 import axios from 'axios'
-import { CardBtn, QtyBtn, Price, Price2, ProdName, Img, FlavorGrid, FlavorItem, AddToCartBtn, BtnAddToCartContainer, ProductMain, Row, Column } from '../styles/ProductStyles'
-
+import { CardBtn, QtyBtn, Price, Price2, ProdName, Img, FlavorGrid, FlavorItem, AddToCartBtn, BtnAddToCartContainer, ProductMain, Row, Column, DivCart } from '../styles/ProductStyles'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom'
 
 export const Product = () => {
 
@@ -23,6 +25,16 @@ export const Product = () => {
 
     return (
         <div>
+            <div className="header">
+                <DivCart>
+                    <Link to="/">
+                        <FontAwesomeIcon link icon={faArrowLeft} />
+                    </Link>
+                    <Link to="/cart">
+                        <FontAwesomeIcon icon={faShoppingCart} />
+                    </Link>
+                </DivCart>
+            </div>
             <ProductMain>
                 <section>
                     <Img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636988787/guappjolotas/details/g-verde_mfrtzi.svg" />
@@ -31,7 +43,7 @@ export const Product = () => {
 
                     <CardBtn>
                         <QtyBtn>
-                            <img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636994750/guappjolotas/interface/minus-circle_xyliah.svg" />
+                            <img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636994750/guappjolotas/interface/minus-circle_xyliah.svg" alt="" />
                         </QtyBtn>
                         <h2>1</h2>
                         <QtyBtn>
@@ -57,12 +69,11 @@ export const Product = () => {
 
                 {/* GUAJOLOCOMBO */}
                 <section>
-                <h2>Gualolocombo</h2>
-                                <h5>Selecciona la bebida que más te guste y disfruta de tu desayuno.</h5>
+                    <h2>Gualolocombo</h2>
+                    <h5>Selecciona la bebida que más te guste y disfruta de tu desayuno.</h5>
                     {
                         recomendedProduct.map(prod => (
                             <div key={prod.id}>
-                                
 
                                 <div>
                                     <Row>
@@ -86,7 +97,6 @@ export const Product = () => {
                         ))
                     }
                 </section>
-
 
             </ProductMain>
 

@@ -16,6 +16,11 @@ export const Sh3 = styled.h3`
     text-align: center;
     grid-column:1;
     padding: .5rem;
+
+    &.active {
+        color: orange;
+        text-decoration: underline;
+    }
     `
 
 export const Categorydiv = styled.div`
