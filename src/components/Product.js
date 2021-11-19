@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { URL_BEBIDAS } from '../helpers/URL'
+import { URL_BEBIDAS, URL_GUAJOLOTAS } from '../helpers/URL'
 import axios from 'axios'
 import { CardBtn, QtyBtn, Price, Price2, ProdName, Img, FlavorGrid, FlavorItem, AddToCartBtn, BtnAddToCartContainer, ProductMain, Row, Column, DivCart } from '../styles/ProductStyles'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,36 +8,60 @@ import { Link } from 'react-router-dom'
 
 export const Product = () => {
 
-    const [productFlag, setProductFlag] = useState(undefined)
+    const [productCategory, setproductCategory] = useState('')
 
-    const [recomendedProduct, setRecomendedProduct] = useState([])
+    const [selectedProduct, setSelectedProduct] = useState(undefined)
 
-    const getRecomend = () => {
-        axios.get(URL_BEBIDAS)
+    const [recomendedProduct, setRecomendedProduct] = useState([]) //array de bebidas o producto recomendado
+
+    //finding the product id and category function
+    const productFinder = () => {
+        let prodId = JSON.parse(localStorage.getItem('idKeeper'))
+        setSelectedProduct(prodId.id)
+        setproductCategory(prodId.category)
+        console.log(prodId)
+    }
+
+    // const productOnDisplay = (selectedProduct) => {
+    //     axios.get()
+    // }
+
+
+    const getRecomend = (category) => {
+        if(category === 'guajolotas'){
+            axios.get(URL_BEBIDAS)
             .then(res => setRecomendedProduct(res.data))
+        } else if(category === 'bebidas'){
+            axios.get(URL_GUAJOLOTAS)
+            .then(res => setRecomendedProduct(res.data))
+        }else if(category === 'tamales'){
+            axios.get(URL_BEBIDAS)
+            .then(res => setRecomendedProduct(res.data))
+        }
+        
     }
 
     useEffect(() => {
-        getRecomend()
+        productFinder()
+        getRecomend(productCategory)
+        console.log(recomendedProduct)
     }, [])
-
-    console.log(recomendedProduct)
 
     return (
         <div>
             <div className="header">
                 <DivCart>
                     <Link to="/">
-                        <FontAwesomeIcon link icon={faArrowLeft} />
+                        <FontAwesomeIcon link icon={faArrowLeft} style={{color: "grey"}} />
                     </Link>
                     <Link to="/cart">
-                        <FontAwesomeIcon icon={faShoppingCart} />
+                        <FontAwesomeIcon icon={faShoppingCart} style={{color: "grey"}} />
                     </Link>
                 </DivCart>
             </div>
             <ProductMain>
                 <section>
-                    <Img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636988787/guappjolotas/details/g-verde_mfrtzi.svg" />
+                    <Img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636988787/guappjolotas/details/g-verde_mfrtzi.svg" alt="" />
                     <ProdName>Guajolota</ProdName>
                     <Price>$25 MXN</Price>
 
@@ -47,7 +71,7 @@ export const Product = () => {
                         </QtyBtn>
                         <h2>1</h2>
                         <QtyBtn>
-                            <img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636989826/guappjolotas/interface/plus-circle_zfrpde.svg" />
+                            <img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636989826/guappjolotas/interface/plus-circle_zfrpde.svg" alt="" />
                         </QtyBtn>
                     </CardBtn>
                 </section>

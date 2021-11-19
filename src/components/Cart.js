@@ -13,9 +13,8 @@ const Cart = () => {
     useEffect(() => {
         getCart(URL_CART)
         console.log(cart)
-    }, [])
+    },)
 
-    
     
     //state. we change this states values and POST it to the API. 
     const [cart, setCart] = useState({
