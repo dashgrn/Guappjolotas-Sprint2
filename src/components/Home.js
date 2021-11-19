@@ -8,7 +8,7 @@ import { URL_GUAJOLOTAS, URL_BEBIDAS, URL_TAMALES } from '../helpers/URL'
 
 export const Home = () => {
 
-    let productFlag = null
+    const [productFlag, setProductFlag] = useState(null)
 
     const [producto, setProducto] = useState([])
 
@@ -37,9 +37,12 @@ export const Home = () => {
         getProducto(URL_TAMALES)
     }
 
-    const cardClick = (id) => {
-        console.log(id)
-        localStorage.setItem('idKeeper', id)
+    const cardClick = (id, category) => {
+        let obj = {
+            id:id, 
+            category: category
+            }
+        localStorage.setItem('idKeeper', JSON.stringify(obj))
     }
 
     const [guajolotaClass, setguajolotaClass] = useState('active')
@@ -104,7 +107,7 @@ export const Home = () => {
                 {
                     producto.map(prod => (
                         <Card key={prod.id}>
-                            <Link to="/product" onClick={(e) => { cardClick(prod.id) }} style={{ textDecoration: 'none' }}>
+                            <Link to="/product" onClick={(e) => { cardClick(prod.id, prod.category) }} style={{ textDecoration: 'none' }}>
                                 <Row>
                                     <Column>
                                         <Img src={prod.img} alt={prod.type} />

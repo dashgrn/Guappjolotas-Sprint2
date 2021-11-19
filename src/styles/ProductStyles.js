@@ -101,5 +101,4 @@ export const DivCart = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    color: gray;
 `
