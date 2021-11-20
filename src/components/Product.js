@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { URL_BEBIDAS, URL_GUAJOLOTAS } from '../helpers/URL'
+import { URL_BEBIDAS, URL_GUAJOLOTAS, URL_SABORES, URL_SABORES_BEBIDAS, URL_TAMALES } from '../helpers/URL'
 import axios from 'axios'
 import { CardBtn, QtyBtn, Price, Price2, ProdName, Img, FlavorGrid, FlavorItem, AddToCartBtn, BtnAddToCartContainer, ProductMain, Row, Column, DivCart } from '../styles/ProductStyles'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,62 +8,83 @@ import { Link } from 'react-router-dom'
 
 export const Product = () => {
 
-    const [productCategory, setproductCategory] = useState('')
-
-    const [selectedProduct, setSelectedProduct] = useState(undefined)
-
-    const [recomendedProduct, setRecomendedProduct] = useState([]) //array de bebidas o producto recomendado
-
-    //finding the product id and category function
-    const productFinder = () => {
-        let prodId = JSON.parse(localStorage.getItem('idKeeper'))
-        setSelectedProduct(prodId.id)
-        setproductCategory(prodId.category)
-        console.log(prodId)
-    }
-
-    // const productOnDisplay = (selectedProduct) => {
-    //     axios.get()
-    // }
-
-
-    const getRecomend = (category) => {
-        if(category === 'guajolotas'){
-            axios.get(URL_BEBIDAS)
-            .then(res => setRecomendedProduct(res.data))
-        } else if(category === 'bebidas'){
-            axios.get(URL_GUAJOLOTAS)
-            .then(res => setRecomendedProduct(res.data))
-        }else if(category === 'tamales'){
-            axios.get(URL_BEBIDAS)
-            .then(res => setRecomendedProduct(res.data))
-        }
-        
-    }
+    let prodId = JSON.parse(localStorage.getItem('idKeeper'))
+    console.log(prodId);
 
     useEffect(() => {
-        productFinder()
-        getRecomend(productCategory)
-        console.log(recomendedProduct)
+        getCurrProduct(prodId)
+        getRecomend(prodId.category)
+        getFlavors(prodId.category)
+        console.log(recomendedProduct);
+        console.log(flavors)
+        console.log(currentProduct)
     }, [])
+
+    const [recomendedProduct, setRecomendedProduct] = useState([]) //array producto recomendado
+    const [flavors, setFlavors] = useState([]) //FLAVORS ARRAY 
+    const [currentProduct, setCurrentProduct] = useState({}) //current product
+
+
+    const getCurrProduct = (prod) => {
+        console.log(prod)
+        let currArr = []
+        let currProd = {}
+        if (prod.category === 'guajolotas') {
+            axios.get(URL_GUAJOLOTAS)
+                .then(res => currArr.push(...(res.data)))
+        } else if (prod.category === 'bebidas') {
+            axios.get(URL_BEBIDAS)
+                .then(res => currArr.push(...(res.data)))
+        } else if (prod.category === 'tamales') {
+            axios.get(URL_TAMALES)
+                .then(res => currArr.push(...(res.data)))
+        }
+        currProd = currArr.find(product => product.id === prod.id)
+        console.log(currArr)
+    }
+
+    const getRecomend = (category) => {
+        if (category === 'guajolotas' || category === 'tamales') {
+            axios.get(URL_BEBIDAS)
+                .then(res => setRecomendedProduct(res.data))
+        } else if (category === 'bebidas') {
+            axios.get(URL_GUAJOLOTAS)
+                .then(res => setRecomendedProduct(res.data))
+        }
+    }
+
+    const getFlavors = (category) => {
+        if (category === 'guajolotas' || category === 'tamales') {
+            axios.get(URL_SABORES)
+                .then(res => setFlavors(res.data))
+        } else if (category === 'bebidas') {
+            axios.get(URL_SABORES_BEBIDAS)
+                .then(res => setFlavors(res.data))
+        }
+    }
+
 
     return (
         <div>
             <div className="header">
                 <DivCart>
                     <Link to="/">
-                        <FontAwesomeIcon link icon={faArrowLeft} style={{color: "grey"}} />
+                        <FontAwesomeIcon link icon={faArrowLeft} style={{ color: "grey" }} />
                     </Link>
                     <Link to="/cart">
-                        <FontAwesomeIcon icon={faShoppingCart} style={{color: "grey"}} />
+                        <FontAwesomeIcon icon={faShoppingCart} style={{ color: "grey" }} />
                     </Link>
                 </DivCart>
             </div>
             <ProductMain>
                 <section>
-                    <Img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636988787/guappjolotas/details/g-verde_mfrtzi.svg" alt="" />
-                    <ProdName>Guajolota</ProdName>
-                    <Price>$25 MXN</Price>
+                    <div>
+
+                        <Img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636988787/guappjolotas/details/g-verde_mfrtzi.svg" alt="" />
+                        <ProdName>Guajolota</ProdName>
+                        <Price>$25 MXN</Price>
+
+                    </div>
 
                     <CardBtn>
                         <QtyBtn>
@@ -78,48 +99,55 @@ export const Product = () => {
 
                 <section>
                     <h3>Sabor</h3>
-                    <FlavorGrid>
-                        <FlavorItem>
-                            <img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636836847/guappjolotas/sabores/Property_1_verde_mek95v.svg" />
-                        </FlavorItem>
-                        <FlavorItem>
-                            <img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636836849/guappjolotas/sabores/Property_1_mole_fuheii.svg" />
-                        </FlavorItem>
-                        <FlavorItem>
-                            <img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636836848/guappjolotas/sabores/Property_1_rajas_xsqby1.svg" />
-                        </FlavorItem>
-                    </FlavorGrid>
+                    <div>
+
+                        <FlavorGrid>
+                            {
+                                flavors.map(flavor => (
+                                    <div key={flavor.id}>
+                                        <FlavorItem>
+                                            <img src={flavor.img} />
+                                        </FlavorItem>
+                                    </div>
+                                ))
+
+                            }
+                        </FlavorGrid>
+
+                    </div>
                 </section>
 
                 {/* GUAJOLOCOMBO */}
                 <section>
                     <h2>Gualolocombo</h2>
                     <h5>Selecciona la bebida que más te guste y disfruta de tu desayuno.</h5>
-                    {
-                        recomendedProduct.map(prod => (
-                            <div key={prod.id}>
+                    <div>
+                        {
+                            recomendedProduct.map(prod => (
+                                <div key={prod.id}>
 
-                                <div>
-                                    <Row>
-                                        <img src={prod.img} alt="bebida" />
-                                        <Column>
-                                            <input type="checkbox" />
-                                        </Column>
-                                    </Row>
-                                    <Row>
-                                        <Column>
-                                            <h4>{prod.type}</h4>
-                                        </Column>
-                                        <Column>
-                                            <Price2>
-                                                + ${prod.price} MXN
-                                            </Price2>
-                                        </Column>
-                                    </Row>
+                                    <div>
+                                        <Row>
+                                            <img src={prod.img} alt="bebida" />
+                                            <Column>
+                                                <input type="checkbox" />
+                                            </Column>
+                                        </Row>
+                                        <Row>
+                                            <Column>
+                                                <h4>{prod.type}</h4>
+                                            </Column>
+                                            <Column>
+                                                <Price2>
+                                                    + ${prod.price} MXN
+                                                </Price2>
+                                            </Column>
+                                        </Row>
+                                    </div>
                                 </div>
-                            </div>
-                        ))
-                    }
+                            ))
+                        }
+                    </div>
                 </section>
 
             </ProductMain>
