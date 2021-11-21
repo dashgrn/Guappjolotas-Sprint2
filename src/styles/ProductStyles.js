@@ -86,13 +86,14 @@ export const ProductMain = styled.div`
 `
 
 export const Row = styled.div`
-    display: flex;
-    flex-direction: row;
+   display: flex;
+   justify-content: flex-end;
 `
 
 export const Column = styled.div`
-    flex: 50%;
+    display: flex;
     flex-direction: column;
+    padding: 20px;
 `
 
 export const DivCart = styled.div`
@@ -101,4 +102,8 @@ export const DivCart = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 20px;
+`
+
+export const H4 = styled.h4`
+    margin: 0;
 `

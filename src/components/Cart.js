@@ -22,7 +22,7 @@ const Cart = () => {
         "price": '',
         "qty": '',
         "img": "https://res.cloudinary.com/diqhctpcx/image/upload/v1636836844/guappjolotas/bebidas/Property_1_champurrado_a3bztk.svg"
-    })
+    },[])
 
     const createCart = () => {
         axios.post(URL_CART, cart)

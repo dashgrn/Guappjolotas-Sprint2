@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { URL_BEBIDAS, URL_GUAJOLOTAS, URL_SABORES, URL_SABORES_BEBIDAS, URL_TAMALES } from '../helpers/URL'
 import axios from 'axios'
-import { CardBtn, QtyBtn, Price, Price2, ProdName, Img, FlavorGrid, FlavorItem, AddToCartBtn, BtnAddToCartContainer, ProductMain, Row, Column, DivCart } from '../styles/ProductStyles'
+import { CardBtn, QtyBtn, Price, Price2, ProdName, Img, FlavorGrid, FlavorItem, AddToCartBtn, BtnAddToCartContainer, ProductMain, Row, Column, DivCart, H4 } from '../styles/ProductStyles'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom'
@@ -17,50 +17,70 @@ export const Product = () => {
         getFlavors(prodId.category)
         console.log(recomendedProduct);
         console.log(flavors)
-        console.log(currentProduct)
+        console.log(currentProduct) // POR QUÉ NO LOGEA EL VALOR SI YA EXISTE EN LA FUNCION? YA ESTÁ SETEADO EL VALUE
     }, [])
+
+    let currArr = []
+    let currProd = {}
 
     const [recomendedProduct, setRecomendedProduct] = useState([]) //array producto recomendado
     const [flavors, setFlavors] = useState([]) //FLAVORS ARRAY 
-    const [currentProduct, setCurrentProduct] = useState({}) //current product
+    const [currentProduct, setCurrentProduct] = useState({})
+    const [productAmount, setProductAmount] = useState(1)
 
 
-    const getCurrProduct = (prod) => {
+    const getCurrProduct = async (prod) => {
         console.log(prod)
-        let currArr = []
-        let currProd = {}
         if (prod.category === 'guajolotas') {
-            axios.get(URL_GUAJOLOTAS)
+            await axios.get(URL_GUAJOLOTAS)
                 .then(res => currArr.push(...(res.data)))
         } else if (prod.category === 'bebidas') {
-            axios.get(URL_BEBIDAS)
+            await axios.get(URL_BEBIDAS)
                 .then(res => currArr.push(...(res.data)))
         } else if (prod.category === 'tamales') {
-            axios.get(URL_TAMALES)
+            await axios.get(URL_TAMALES)
                 .then(res => currArr.push(...(res.data)))
         }
-        currProd = currArr.find(product => product.id === prod.id)
+
+        currProd = currArr.find(element => element.id === prod.id)
         console.log(currArr)
+        console.log(currProd)
+        setCurrentProduct(currProd)
     }
 
-    const getRecomend = (category) => {
+
+    const getRecomend = async (category) => {
         if (category === 'guajolotas' || category === 'tamales') {
-            axios.get(URL_BEBIDAS)
+            await axios.get(URL_BEBIDAS)
                 .then(res => setRecomendedProduct(res.data))
         } else if (category === 'bebidas') {
-            axios.get(URL_GUAJOLOTAS)
+            await axios.get(URL_GUAJOLOTAS)
                 .then(res => setRecomendedProduct(res.data))
         }
     }
 
-    const getFlavors = (category) => {
+    const getFlavors = async (category) => {
         if (category === 'guajolotas' || category === 'tamales') {
-            axios.get(URL_SABORES)
+            await axios.get(URL_SABORES)
                 .then(res => setFlavors(res.data))
         } else if (category === 'bebidas') {
-            axios.get(URL_SABORES_BEBIDAS)
+            await axios.get(URL_SABORES_BEBIDAS)
                 .then(res => setFlavors(res.data))
         }
+    }
+
+    const handleFlavor = async (flavor) => {
+        await getCurrProduct(prodId)
+        console.log(flavor)
+        console.log(currArr)
+        let foundFlavor = currArr.find(product => product.flavor === flavor.sabor)
+        console.log(foundFlavor)
+        setCurrentProduct(foundFlavor)
+    }
+
+    const handleAddProduct = (qty) => {
+        console.log(qty)
+
     }
 
 
@@ -79,11 +99,9 @@ export const Product = () => {
             <ProductMain>
                 <section>
                     <div>
-
-                        <Img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636988787/guappjolotas/details/g-verde_mfrtzi.svg" alt="" />
-                        <ProdName>Guajolota</ProdName>
-                        <Price>$25 MXN</Price>
-
+                        <Img src={currentProduct.img} style={{ height: "200px", width: "200px" }} alt="" />
+                        <ProdName>{currentProduct.type}</ProdName>
+                        <Price>${currentProduct.price} MXN</Price>
                     </div>
 
                     <CardBtn>
@@ -106,7 +124,7 @@ export const Product = () => {
                                 flavors.map(flavor => (
                                     <div key={flavor.id}>
                                         <FlavorItem>
-                                            <img src={flavor.img} />
+                                            <img onClick={() => { handleFlavor(flavor) }} src={flavor.img} />
                                         </FlavorItem>
                                     </div>
                                 ))
@@ -118,46 +136,35 @@ export const Product = () => {
                 </section>
 
                 {/* GUAJOLOCOMBO */}
-                <section>
+                
                     <h2>Gualolocombo</h2>
                     <h5>Selecciona la bebida que más te guste y disfruta de tu desayuno.</h5>
-                    <div>
+                    <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap", alignItems: "center", justifyContent: "center", marginBottom: "90px"}}>
                         {
                             recomendedProduct.map(prod => (
-                                <div key={prod.id}>
-
-                                    <div>
+                                <div key={prod.id} style={{ width: "10rem", height: "12rem", backgroundColor: "white", borderRadius: "15px", margin: "5px"}}>
                                         <Row>
-                                            <img src={prod.img} alt="bebida" />
-                                            <Column>
-                                                <input type="checkbox" />
-                                            </Column>
+                                            <input type="checkbox" />
                                         </Row>
-                                        <Row>
-                                            <Column>
-                                                <h4>{prod.type}</h4>
-                                            </Column>
-                                            <Column>
-                                                <Price2>
-                                                    + ${prod.price} MXN
-                                                </Price2>
-                                            </Column>
-                                        </Row>
-                                    </div>
+                                        <Column>
+                                            <img style={{ width: "5rem", height: "5rem"}} src={prod.img} alt="bebida" />
+                                            <H4 style={{fontSize: "13px", fontWeight:"bold"}}>{prod.type}</H4>
+                                            <p style={{color: "#FA4A0C", fontSize: "13px", fontWeight:"bold", margin:"0"}}>+ ${prod.price} MXN</p>
+                                        </Column>
                                 </div>
                             ))
                         }
                     </div>
-                </section>
+               
 
             </ProductMain>
 
-            {/* <BtnAddToCartContainer>
+            <BtnAddToCartContainer>
                 <AddToCartBtn>
                     Agregar 1 al carrito
                     <span> $25 MXN</span>
                 </AddToCartBtn>
-            </BtnAddToCartContainer> */}
+            </BtnAddToCartContainer>
 
         </div>
     )
