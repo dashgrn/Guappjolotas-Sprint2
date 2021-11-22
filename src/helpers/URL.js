@@ -4,3 +4,4 @@ export const URL_TAMALES = 'https://guappjolotas-jsonserver.herokuapp.com/tamale
 export const URL_SABORES = 'https://guappjolotas-jsonserver.herokuapp.com/sabores/'
 export const URL_SABORES_BEBIDAS = 'https://guappjolotas-jsonserver.herokuapp.com/saboresBebidas/'
 export const URL_CART = 'https://guappjolotas-jsonserver.herokuapp.com/cart/'
+export const URL_SEARCH = 'https://guappjolotas-jsonserver.herokuapp.com/allproducts/?type_like='

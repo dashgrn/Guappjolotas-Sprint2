@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { URL_BEBIDAS, URL_GUAJOLOTAS, URL_SABORES, URL_SABORES_BEBIDAS, URL_TAMALES } from '../helpers/URL'
 import axios from 'axios'
-import { CardBtn, QtyBtn, Price, Price2, ProdName, Img, FlavorGrid, FlavorItem, AddToCartBtn, BtnAddToCartContainer, ProductMain, Row, Column, DivCart, H4 } from '../styles/ProductStyles'
+import { CardBtn, QtyBtn, Price, Price2, ProdName, Img, FlavorGrid, FlavorItem, FlavorImg, AddToCartBtn, BtnAddToCartContainer, ProductMain, Row, Column, DivCart, H4 } from '../styles/ProductStyles'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom'
 
+
+let recoProdCost = 0
+let recoProdAmt = 0
+let totalCost = 0
+
 export const Product = () => {
 
     let prodId = JSON.parse(localStorage.getItem('idKeeper'))
-    console.log(prodId);
+    // console.log(prodId);
 
-    useEffect(() => {
-        getCurrProduct(prodId)
-        getRecomend(prodId.category)
-        getFlavors(prodId.category)
-        console.log(recomendedProduct);
-        console.log(flavors)
-        console.log(currentProduct) // POR QUÉ NO LOGEA EL VALOR SI YA EXISTE EN LA FUNCION? YA ESTÁ SETEADO EL VALUE
-    }, [])
-
+    
     let currArr = []
     let currProd = {}
 
@@ -27,10 +24,22 @@ export const Product = () => {
     const [flavors, setFlavors] = useState([]) //FLAVORS ARRAY 
     const [currentProduct, setCurrentProduct] = useState({})
     const [productAmount, setProductAmount] = useState(1)
+    // const [totalCost, setTotalCost] = useState(0)
+    const [mainProductCost, setMainProductCost] = useState(currentProduct.price)
+    const [totalUnits, setTotalUnits] = useState(1)
 
+
+    useEffect(() => {
+        getCurrProduct(prodId)
+        getRecomend(prodId.category)
+        getFlavors(prodId.category)
+        // console.log(recomendedProduct);
+        // console.log(flavors)
+        console.log(currentProduct) // POR QUÉ NO LOGEA EL VALOR SI YA EXISTE EN LA FUNCION? YA ESTÁ SETEADO EL VALUE
+    }, [totalCost])
 
     const getCurrProduct = async (prod) => {
-        console.log(prod)
+        // console.log(prod)
         if (prod.category === 'guajolotas') {
             await axios.get(URL_GUAJOLOTAS)
                 .then(res => currArr.push(...(res.data)))
@@ -74,13 +83,44 @@ export const Product = () => {
         console.log(flavor)
         console.log(currArr)
         let foundFlavor = currArr.find(product => product.flavor === flavor.sabor)
-        console.log(foundFlavor)
         setCurrentProduct(foundFlavor)
     }
 
-    const handleAddProduct = (qty) => {
-        console.log(qty)
+    const handleAddProduct = () => {
+        setProductAmount(productAmount +1)
+        setMainProductCost(productAmount * currentProduct.price)
+        setTotalUnits(totalUnits +1)
+        totalCost = totalCost + currentProduct.price
+        
+    }
+    const handleSubProduct = () => {
+        if (productAmount > 1 ) {
+            setProductAmount(productAmount -1)
+            setMainProductCost(productAmount * currentProduct.price)
+            setTotalUnits(totalUnits -1)
+            totalCost =totalCost - currentProduct.price
+        } else if (productAmount === 1) {
+            return
+        }
+    }
 
+    const handleRecoAdd = (evt, prod) => {
+        if(evt.target.checked === true) {
+            recoProdCost+= prod.price
+            recoProdAmt += 1
+            setTotalUnits(totalUnits+1)
+            totalCost = totalCost + prod.price
+            console.log(prod.price);
+            console.log(recoProdCost);
+            console.log(totalCost);
+        } else {
+            recoProdCost -= prod.price
+            recoProdAmt -=  1
+            setTotalUnits(totalUnits-1)
+            totalCost = totalCost - prod.price
+        }
+        console.log(recoProdCost)
+        console.log(recoProdAmt)
     }
 
 
@@ -106,11 +146,11 @@ export const Product = () => {
 
                     <CardBtn>
                         <QtyBtn>
-                            <img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636994750/guappjolotas/interface/minus-circle_xyliah.svg" alt="" />
+                            <img onClick={() => {handleSubProduct()}}  src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636994750/guappjolotas/interface/minus-circle_xyliah.svg" alt="" />
                         </QtyBtn>
-                        <h2>1</h2>
+                        <h2>{productAmount}</h2>
                         <QtyBtn>
-                            <img src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636989826/guappjolotas/interface/plus-circle_zfrpde.svg" alt="" />
+                            <img onClick={() => {handleAddProduct()}} src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636989826/guappjolotas/interface/plus-circle_zfrpde.svg" alt="" />
                         </QtyBtn>
                     </CardBtn>
                 </section>
@@ -124,7 +164,7 @@ export const Product = () => {
                                 flavors.map(flavor => (
                                     <div key={flavor.id}>
                                         <FlavorItem>
-                                            <img onClick={() => { handleFlavor(flavor) }} src={flavor.img} />
+                                            <FlavorImg onClick={() => { handleFlavor(flavor) }} src={flavor.img} />
                                         </FlavorItem>
                                     </div>
                                 ))
@@ -144,7 +184,7 @@ export const Product = () => {
                             recomendedProduct.map(prod => (
                                 <div key={prod.id} style={{ width: "10rem", height: "12rem", backgroundColor: "white", borderRadius: "15px", margin: "5px"}}>
                                         <Row>
-                                            <input type="checkbox" />
+                                            <input onClick={(evt) => {handleRecoAdd(evt, prod)}} type="checkbox" />
                                         </Row>
                                         <Column>
                                             <img style={{ width: "5rem", height: "5rem"}} src={prod.img} alt="bebida" />
@@ -161,8 +201,8 @@ export const Product = () => {
 
             <BtnAddToCartContainer>
                 <AddToCartBtn>
-                    Agregar 1 al carrito
-                    <span> $25 MXN</span>
+                    Agregar {totalUnits} al carrito:
+                    <span> $ {totalCost === 0 ? currentProduct.price : recoProdCost + currentProduct.price * productAmount } MXN</span>
                 </AddToCartBtn>
             </BtnAddToCartContainer>
 

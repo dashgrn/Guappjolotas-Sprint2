@@ -20,6 +20,15 @@ export const QtyBtn = styled.button`
     padding: 0;
     border: none;
     background: none;
+    &:hover:active{
+        transform: scale(.90)
+    }
+`
+
+export const FlavorImg = styled.img`
+    &:hover:active{
+        transform: scale(.90)
+    }
 `
 
 export const ProdName = styled.h3`
@@ -64,6 +73,9 @@ export const AddToCartBtn = styled.button`
     text-align: center;
     font-size: 18px;
     border: none;
+    &:hover:active{
+        transform: scale(.98)
+    }
 `
 
 export const BtnAddToCartContainer = styled.div`
