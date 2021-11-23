@@ -16,7 +16,7 @@ export const Product = () => {
     let prodId = JSON.parse(localStorage.getItem('idKeeper'))
     // console.log(prodId);
 
-    
+
     let currArr = []
     let currProd = {}
 
@@ -87,36 +87,36 @@ export const Product = () => {
     }
 
     const handleAddProduct = () => {
-        setProductAmount(productAmount +1)
+        setProductAmount(productAmount + 1)
         setMainProductCost(productAmount * currentProduct.price)
-        setTotalUnits(totalUnits +1)
+        setTotalUnits(totalUnits + 1)
         totalCost = totalCost + currentProduct.price
-        
+
     }
     const handleSubProduct = () => {
-        if (productAmount > 1 ) {
-            setProductAmount(productAmount -1)
+        if (productAmount > 1) {
+            setProductAmount(productAmount - 1)
             setMainProductCost(productAmount * currentProduct.price)
-            setTotalUnits(totalUnits -1)
-            totalCost =totalCost - currentProduct.price
+            setTotalUnits(totalUnits - 1)
+            totalCost = totalCost - currentProduct.price
         } else if (productAmount === 1) {
             return
         }
     }
 
     const handleRecoAdd = (evt, prod) => {
-        if(evt.target.checked === true) {
-            recoProdCost+= prod.price
+        if (evt.target.checked === true) {
+            recoProdCost += prod.price
             recoProdAmt += 1
-            setTotalUnits(totalUnits+1)
+            setTotalUnits(totalUnits + 1)
             totalCost = totalCost + prod.price
             console.log(prod.price);
             console.log(recoProdCost);
             console.log(totalCost);
         } else {
             recoProdCost -= prod.price
-            recoProdAmt -=  1
-            setTotalUnits(totalUnits-1)
+            recoProdAmt -= 1
+            setTotalUnits(totalUnits - 1)
             totalCost = totalCost - prod.price
         }
         console.log(recoProdCost)
@@ -146,11 +146,11 @@ export const Product = () => {
 
                     <CardBtn>
                         <QtyBtn>
-                            <img onClick={() => {handleSubProduct()}}  src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636994750/guappjolotas/interface/minus-circle_xyliah.svg" alt="" />
+                            <img onClick={() => { handleSubProduct() }} src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636994750/guappjolotas/interface/minus-circle_xyliah.svg" alt="" />
                         </QtyBtn>
                         <h2>{productAmount}</h2>
                         <QtyBtn>
-                            <img onClick={() => {handleAddProduct()}} src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636989826/guappjolotas/interface/plus-circle_zfrpde.svg" alt="" />
+                            <img onClick={() => { handleAddProduct() }} src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636989826/guappjolotas/interface/plus-circle_zfrpde.svg" alt="" />
                         </QtyBtn>
                     </CardBtn>
                 </section>
@@ -176,35 +176,37 @@ export const Product = () => {
                 </section>
 
                 {/* GUAJOLOCOMBO */}
-                
-                    <h2>Gualolocombo</h2>
-                    <h5>Selecciona la bebida que más te guste y disfruta de tu desayuno.</h5>
-                    <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap", alignItems: "center", justifyContent: "center", marginBottom: "90px"}}>
-                        {
-                            recomendedProduct.map(prod => (
-                                <div key={prod.id} style={{ width: "10rem", height: "12rem", backgroundColor: "white", borderRadius: "15px", margin: "5px"}}>
-                                        <Row>
-                                            <input onClick={(evt) => {handleRecoAdd(evt, prod)}} type="checkbox" />
-                                        </Row>
-                                        <Column>
-                                            <img style={{ width: "5rem", height: "5rem"}} src={prod.img} alt="bebida" />
-                                            <H4 style={{fontSize: "13px", fontWeight:"bold"}}>{prod.type}</H4>
-                                            <p style={{color: "#FA4A0C", fontSize: "13px", fontWeight:"bold", margin:"0"}}>+ ${prod.price} MXN</p>
-                                        </Column>
-                                </div>
-                            ))
-                        }
-                    </div>
-               
+
+                <h2>Gualolocombo</h2>
+                <h5>Selecciona la bebida que más te guste y disfruta de tu desayuno.</h5>
+                <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", alignItems: "center", justifyContent: "center", marginBottom: "90px" }}>
+                    {
+                        recomendedProduct.map(prod => (
+                            <div key={prod.id} style={{ width: "10rem", height: "12rem", backgroundColor: "white", borderRadius: "15px", margin: "5px" }}>
+                                <Row>
+                                    <input onClick={(evt) => { handleRecoAdd(evt, prod) }} type="checkbox" />
+                                </Row>
+                                <Column>
+                                    <img style={{ width: "5rem", height: "5rem" }} src={prod.img} alt="bebida" />
+                                    <H4 style={{ fontSize: "13px", fontWeight: "bold" }}>{prod.type}</H4>
+                                    <p style={{ color: "#FA4A0C", fontSize: "13px", fontWeight: "bold", margin: "0" }}>+ ${prod.price} MXN</p>
+                                </Column>
+                            </div>
+                        ))
+                    }
+                </div>
+
 
             </ProductMain>
+            <div style={{ display: "flex" }}>
+                <BtnAddToCartContainer>
+                    <AddToCartBtn>
+                        Agregar {totalUnits} al carrito:
+                        <span> $ {totalCost === 0 ? currentProduct.price : recoProdCost + currentProduct.price * productAmount} MXN</span>
+                    </AddToCartBtn>
+                </BtnAddToCartContainer>
+            </div>
 
-            <BtnAddToCartContainer>
-                <AddToCartBtn>
-                    Agregar {totalUnits} al carrito:
-                    <span> $ {totalCost === 0 ? currentProduct.price : recoProdCost + currentProduct.price * productAmount } MXN</span>
-                </AddToCartBtn>
-            </BtnAddToCartContainer>
 
         </div>
     )

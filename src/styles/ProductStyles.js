@@ -62,14 +62,13 @@ export const FlavorItem = styled.div`
 
 export const AddToCartBtn = styled.button`
     background-color: #F6F6F9;
-    flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     background-color: #FA4A0C;
     border-radius: 40px;
     height: 70px;
-    width: 300px;
+    width: 320px;
     color: white;
-    padding: 24px;
+    padding: 25px;
     text-align: center;
     font-size: 18px;
     border: none;
@@ -79,12 +78,14 @@ export const AddToCartBtn = styled.button`
 `
 
 export const BtnAddToCartContainer = styled.div`
+justify-content: center;
+    width: 100%;
+    position: relative;
     backdrop-filter: blur(48px);
-    width: 100vh;
     background-color:#F2F2F2;
     display: flex;
-    flex-direction: column;
-    padding: 16px 24px;
+    flex-direction: row;
+    padding: 15px 5px;
     position: fixed;
     bottom: 0px;
     margin-top: auto;
@@ -114,6 +115,12 @@ export const DivCart = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 20px;
+`
+export const DivCart2 = styled.div`
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 10px;
 `
 
 export const H4 = styled.h4`

@@ -19,8 +19,8 @@ export const Home = () => {
 
     }, [])
 
-    const getProducto = (url) => {
-        axios.get(url)
+    const getProducto = async (url) => {
+        await axios.get(url)
             .then(res => setProducto(res.data))
     }
 
