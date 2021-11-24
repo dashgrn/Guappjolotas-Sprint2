@@ -1,30 +1,150 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { URL_BEBIDAS, URL_GUAJOLOTAS, URL_SABORES, URL_SABORES_BEBIDAS, URL_TAMALES } from '../helpers/URL'
 import axios from 'axios'
 import { CardBtn, QtyBtn, Price, Price2, ProdName, Img, FlavorGrid, FlavorItem, FlavorImg, AddToCartBtn, BtnAddToCartContainer, ProductMain, Row, Column, DivCart, H4 } from '../styles/ProductStyles'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom'
+import { CartContext } from './CartContext'
+import context from 'react-bootstrap/esm/AccordionContext';
 
 
 let recoProdCost = 0
 let recoProdAmt = 0
 let totalCost = 0
 
+let currArr = []
+let currProd = {}
+
 export const Product = () => {
 
     let prodId = JSON.parse(localStorage.getItem('idKeeper'))
     // console.log(prodId);
 
+    const { contextCart, setContextCart } = useContext(CartContext)  //DESTRUCTURING FROM CART GLOBAL CONTEXT
+    console.log(contextCart)
 
-    let currArr = []
-    let currProd = {}
+    const [currentCart, setCurrentCart] = useState([
+        {
+            type: "",
+            amount: 1,
+            img: "",
+            price: 0,
+            id: 0
+        }
+    ])
+    console.log(currentCart)
+
+    const [cartHolder, setCartHolder] = useState([ //MAIN PRODUCT CAR HOLDER
+        {
+            type: "",
+            amount: 1,
+            img: "",
+            price: 0,
+            id: 0
+        }
+    ])
+
+    const [cartHolder2, setCartHolder2] = useState([ // RECO PRODUCT CAR HOLDER
+        {
+            type: "",
+            amount: 0,
+            img: "",
+            price: 0,
+            id: 0
+        }
+    ])
+
+    const cartHolderHandlerMainAdd = (p) => {  //handling the main product (into cart) ADDING AMOUNT
+        let cont = cartHolder[0].amount
+        if (cartHolder[0].amount === 1) {
+            setCartHolder(cartHolder[0] = [{
+                type: p.type,
+                amount: cont + 1,
+                img: p.img,
+                price: p.price,
+                id: p.id
+            }])
+            console.log(cartHolder)
+        } else if (cartHolder[0].amount > 1) {
+            setCartHolder(cartHolder[0] = [{
+                type: p.type,
+                amount: cont + 1,
+                img: p.img,
+                price: p.price,
+                id: p.id
+            }])
+        }
+    }
+
+    const cartHolderHandlerMainMin = (p) => {  //handling the main product (into cart) DECREASING AMOUNT
+        let cont = cartHolder[0].amount
+        if (cartHolder[0].amount > 1) {
+            setCartHolder(cartHolder[0] = [{
+                type: p.type,
+                amount: cont - 1,
+                img: p.img,
+                price: p.price,
+                id: p.id
+            }])
+            console.log(cartHolder)
+        } else {
+            return
+        }
+    }
+
+    const cartHolderRecoAdd = (evt, p) => { //INCREASING AMOUNT CART HOLDER RECO PROD
+        let cont = cartHolder2[0].amount
+        if (evt.target.checked === true) {
+            setCartHolder2(cartHolder2[0] = [{
+                type: p.type,
+                amount: cont + 1,
+                img: p.img,
+                price: p.price,
+                id: p.id
+            }])
+        } else if (evt.target.checked === false) {
+            setCartHolder2(cartHolder2[0] = [{
+                type: p.type,
+                amount: cont - 1,
+                img: p.img,
+                price: p.price,
+                id: p.id
+            }])
+        }
+    }
+
+    const handleAddBtn = (currProd, type) => {
+        console.log(type)
+        console.log(currProd)
+        if(type === 'main'){
+            setCurrentCart([{
+                type: currProd.type,
+                amount: productAmount,
+                img: currProd.img,
+                id: currProd.id
+            }])
+        } else if (type === 'combo'){
+            setCurrentCart([{
+                type: currProd.type,
+                amount: 1,
+                img: currProd.img,
+                id: currProd.id
+            }])
+            console.log(currentCart)
+        }
+        
+        setContextCart(currentCart)
+              
+        console.log(cartHolder)
+        console.log(cartHolder2)
+        console.log(currentCart)
+    }
 
     const [recomendedProduct, setRecomendedProduct] = useState([]) //array producto recomendado
     const [flavors, setFlavors] = useState([]) //FLAVORS ARRAY 
     const [currentProduct, setCurrentProduct] = useState({})
     const [productAmount, setProductAmount] = useState(1)
-    // const [totalCost, setTotalCost] = useState(0)
     const [mainProductCost, setMainProductCost] = useState(currentProduct.price)
     const [totalUnits, setTotalUnits] = useState(1)
 
@@ -33,8 +153,6 @@ export const Product = () => {
         getCurrProduct(prodId)
         getRecomend(prodId.category)
         getFlavors(prodId.category)
-        // console.log(recomendedProduct);
-        // console.log(flavors)
         console.log(currentProduct) // POR QUÉ NO LOGEA EL VALOR SI YA EXISTE EN LA FUNCION? YA ESTÁ SETEADO EL VALUE
     }, [totalCost])
 
@@ -42,13 +160,13 @@ export const Product = () => {
         // console.log(prod)
         if (prod.category === 'guajolotas') {
             await axios.get(URL_GUAJOLOTAS)
-                .then(res => currArr.push(...(res.data)))
+                .then(res => currArr = res.data)
         } else if (prod.category === 'bebidas') {
             await axios.get(URL_BEBIDAS)
-                .then(res => currArr.push(...(res.data)))
+                .then(res => currArr = res.data)
         } else if (prod.category === 'tamales') {
             await axios.get(URL_TAMALES)
-                .then(res => currArr.push(...(res.data)))
+                .then(res => currArr = res.data)
         }
 
         currProd = currArr.find(element => element.id === prod.id)
@@ -124,6 +242,8 @@ export const Product = () => {
     }
 
 
+
+
     return (
         <div>
             <div className="header">
@@ -146,11 +266,11 @@ export const Product = () => {
 
                     <CardBtn>
                         <QtyBtn>
-                            <img onClick={() => { handleSubProduct() }} src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636994750/guappjolotas/interface/minus-circle_xyliah.svg" alt="" />
+                            <img onClick={() => { handleSubProduct(); cartHolderHandlerMainMin(currentProduct); }} src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636994750/guappjolotas/interface/minus-circle_xyliah.svg" alt="" />
                         </QtyBtn>
                         <h2>{productAmount}</h2>
                         <QtyBtn>
-                            <img onClick={() => { handleAddProduct() }} src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636989826/guappjolotas/interface/plus-circle_zfrpde.svg" alt="" />
+                            <img onClick={() => { handleAddProduct(); cartHolderHandlerMainAdd(currentProduct); }} src="https://res.cloudinary.com/diqhctpcx/image/upload/v1636989826/guappjolotas/interface/plus-circle_zfrpde.svg" alt="" />
                         </QtyBtn>
                     </CardBtn>
                 </section>
@@ -184,7 +304,11 @@ export const Product = () => {
                         recomendedProduct.map(prod => (
                             <div key={prod.id} style={{ width: "10rem", height: "12rem", backgroundColor: "white", borderRadius: "15px", margin: "5px" }}>
                                 <Row>
-                                    <input onClick={(evt) => { handleRecoAdd(evt, prod) }} type="checkbox" />
+                                    <input onClick={(evt) => { handleRecoAdd(evt, prod);
+                                    if(evt.target.checked === true){
+                                        handleAddBtn(prod, 'combo')
+                                    }
+                                    }} type="checkbox" />
                                 </Row>
                                 <Column>
                                     <img style={{ width: "5rem", height: "5rem" }} src={prod.img} alt="bebida" />
@@ -200,7 +324,7 @@ export const Product = () => {
             </ProductMain>
             <div style={{ display: "flex" }}>
                 <BtnAddToCartContainer>
-                    <AddToCartBtn>
+                    <AddToCartBtn onClick={() => { handleAddBtn( currProd, 'main' ) }}>
                         Agregar {totalUnits} al carrito:
                         <span> $ {totalCost === 0 ? currentProduct.price : recoProdCost + currentProduct.price * productAmount} MXN</span>
                     </AddToCartBtn>

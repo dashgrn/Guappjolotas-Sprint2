@@ -1,23 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { URL_CART } from '../helpers/URL'
-import { Column, DivCart2, Row } from '../styles/ProductStyles'
+import { Column, DivCart2, Row, AddToCartBtn, BtnAddToCartContainer } from '../styles/ProductStyles'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom'
 import { Card, Img, Price, ProdName } from '../styles/CardStyles';
-import { AddToCartBtn, BtnAddToCartContainer } from '../styles/ProductStyles';
+import { CartContext } from '../components/CartContext'
 
-let cartArr = [];
-
-const getCart = async(url) => {
-    await axios.get(url)
-        .then(res => cartArr = cartArr.push(...res.data))
-        .catch(err => console.log(err))
-}
 
 
 const Cart = () => {
+
+
+    const { contextCart, setContextCart } = useContext(CartContext)
 
     //state. we change this states values and PUT it to the API. 
     const [cartEdit, setCartEdit] = useState({
@@ -27,12 +23,11 @@ const Cart = () => {
         "img": ""
     }, [])
 
-    const [cartArrayInc, setCartArrayInc] = useState(cartArr)
+    const [cartArrayInc, setCartArrayInc] = useState(contextCart)
 
     useEffect(() => {
-        getCart(URL_CART)
-        setCartArrayInc(cartArr)
-        console.log(cartArr)
+        // getCart(URL_CART)
+        // setCartArrayInc(cartArr)
         console.log(cartArrayInc)
     }, [])
 
@@ -64,7 +59,7 @@ const Cart = () => {
            
             <div>
                 {
-                    cartArr.map(prod => (
+                    cartArrayInc.map(prod => (
                         <Card key={prod.id}>
                             <Link to="/product" onClick={(e) => { cardClick(prod.id, prod.category) }} style={{ textDecoration: 'none' }}>
                                 <Row>
@@ -85,7 +80,6 @@ const Cart = () => {
             <BtnAddToCartContainer>
                 <AddToCartBtn>
                     <span>Pagar</span>
-
                 </AddToCartBtn>
             </BtnAddToCartContainer>
 
