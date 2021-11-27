@@ -102,6 +102,10 @@ export const Row = styled.div`
    display: flex;
    justify-content: flex-end;
 `
+export const RowPay = styled.div`
+   display: flex;
+   justify-content: space-between;
+`
 
 export const Column = styled.div`
     display: flex;

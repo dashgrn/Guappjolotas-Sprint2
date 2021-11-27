@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom'
 import { CartContext } from './CartContext'
-import context from 'react-bootstrap/esm/AccordionContext';
 
 
 let recoProdCost = 0
@@ -122,10 +121,12 @@ export const Product = () => {
                 type: currProd.type,
                 amount: productAmount,
                 img: currProd.img,
-                id: currProd.id
+                id: currProd.id,
+                price: currProd.price
             }])
         } else if (type === 'combo'){
             setCurrentCart([{
+                ...currentCart,
                 type: currProd.type,
                 amount: 1,
                 img: currProd.img,
@@ -228,9 +229,6 @@ export const Product = () => {
             recoProdAmt += 1
             setTotalUnits(totalUnits + 1)
             totalCost = totalCost + prod.price
-            console.log(prod.price);
-            console.log(recoProdCost);
-            console.log(totalCost);
         } else {
             recoProdCost -= prod.price
             recoProdAmt -= 1

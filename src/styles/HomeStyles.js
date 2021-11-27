@@ -41,6 +41,8 @@ export const Input = styled.input`
     line-height: 21px;
 `
 export const Section = styled.section`
+    display: flex;
+    justify-content:center;
     margin: auto;
     text-align: center;
     padding: 10px;

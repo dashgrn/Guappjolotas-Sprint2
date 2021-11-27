@@ -39,9 +39,9 @@ export const Home = () => {
 
     const cardClick = (id, category) => {
         let obj = {
-            id:id, 
+            id: id,
             category: category
-            }
+        }
         localStorage.setItem('idKeeper', JSON.stringify(obj))
     }
 
@@ -78,7 +78,9 @@ export const Home = () => {
 
             </div>
             <Section>
-                <Input placeholder="Sabor de guajolota, bebidas..."></Input>
+                <Link to="/search">
+                    <Input placeholder="Sabor de guajolota, bebidas..."></Input>
+                </Link>
             </Section>
             <div>
                 <Categorydiv className="justify-content-center">
