@@ -83,10 +83,10 @@ const Cart = () => {
             <Card>
                 <RowPay>
                     <Column>
-                        <h3 style={{flexDirection:"start"}}>Tota</h3>
+                        <h3 style={{ flexDirection: "start" }}>Tota</h3>
                     </Column>
                     <Column>
-                        <h3 style={{color:"#FA4A0C"}}>${cartArrayInc[0].price*cartArrayInc[0].amount} MXN</h3>
+                        <h3 style={{ color: "#FA4A0C" }}>${cartArrayInc[0].price * cartArrayInc[0].amount} MXN</h3>
                     </Column>
                 </RowPay>
             </Card>

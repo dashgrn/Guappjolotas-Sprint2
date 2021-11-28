@@ -6,8 +6,17 @@ import { DivCart } from '../styles/ProductStyles'
 import { Input, Section } from '../styles/HomeStyles'
 import axios from 'axios'
 import { URL_SEARCH } from '../helpers/URL'
+import { Card, Column, Img, Price, ProdName, Row } from '../styles/CardStyles';
 
 const Search = () => {
+
+    const cardClick = (id, category) => {
+        let obj = {
+            id: id,
+            category: category
+        }
+        localStorage.setItem('idKeeper', JSON.stringify(obj))
+    }
 
     const [allProds, setAllProds] = useState([])
 
@@ -59,6 +68,24 @@ const Search = () => {
                 </form>
 
             </div>
+
+            {
+                    allProds.map(prod => (
+                        <Card key={prod.id}>
+                            <Link to="/product" onClick={(e) => { cardClick(prod.id, prod.category) }} style={{ textDecoration: 'none' }}>
+                                <Row>
+                                    <Column>
+                                        <Img src={prod.img} alt={prod.type} />
+                                    </Column>
+                                    <Column>
+                                        <ProdName>{prod.type}</ProdName>
+                                        <Price>${prod.price} MXN</Price>
+                                    </Column>
+                                </Row>
+                            </Link>
+                        </Card>
+                    ))
+                }
         </div>
     )
 }
